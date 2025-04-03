@@ -4,19 +4,6 @@ export default function App() {
   const [bill, setBill] = useState("");
   const [percent, setPercent] = useState(0);
   const [myPercent, setMyPercent] = useState(0);
-  // const [results, setResults] = useState(0);s
-
-  // function valInput(val) {
-  //   const newBill = Number(val);
-  //   setBill(newBill);
-  //   setResults(newBill * (1 + percent));
-  // }
-
-  // function valPercent(val) {
-  //   const newPercent = parseFloat(val);
-  //   setPercent(newPercent);
-  //   setResults(bill * (1 + newPercent));
-  // }
 
   function valInput(val) {
     setBill(Number(val));
@@ -30,6 +17,11 @@ export default function App() {
   }
 
   const results = Math.round(bill * (1 + percent + myPercent));
+  function reset() {
+    setBill("");
+    setPercent(0);
+    setMyPercent(0);
+  }
   return (
     <div className="container">
       <Result
@@ -39,10 +31,13 @@ export default function App() {
         calMyPercent={valMyPercent}
         percentVal={percent}
         calPercent={valPercent}
+        toggleReset={reset}
       >
         <span className="main-text">{`You pay $${results} ($${bill} + ${(
           percent + myPercent
-        ).toFixed(2)})`}</span>
+        ).toFixed(2)})`}</span>{" "}
+        <br />
+        <button onClick={reset}>reset</button>
       </Result>
     </div>
   );
@@ -59,6 +54,12 @@ function Result({
 }) {
   return (
     <div className="calculator">
+      <h4
+        style={{ display: "flex", justifyContent: "center", fontSize: "large" }}
+      >
+        Calculate Cashier
+      </h4>{" "}
+      <br />
       <BillInput valueBil={valueBil} calInput={calInput} />
       <FriendsRatings
         percentVal={percentVal}
@@ -81,8 +82,9 @@ function BillInput({ valueBil, calInput }) {
       <span>How much was the bill?</span>
       <input
         type="text"
-        value={valueBil}
+        value={valueBil > 0 ? valueBil : ""}
         onChange={(e) => calInput(e.target.value)}
+        placeholder="Bill"
       />
     </div>
   );
@@ -114,17 +116,3 @@ function FriendsRatings({ calPercent, text, percentVal }) {
     </div>
   );
 }
-
-// function MyRaTings({ valSum, sum }) {
-//   return (
-//     <div>
-//       <span>How did You like the service?</span>
-//       <select value={valSum} onChange={(e) => sum(e.target.value)}>
-//         <option value={0}>Dissatisfied</option>
-//         <option value={0.05}>it was okay (5%)</option>
-//         <option value={0.1}>it was good (10%)</option>
-//         <option value={0.2}>Absolutely amazing (20%)</option>
-//       </select>
-//     </div>
-//   );
-// }
